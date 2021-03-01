@@ -52,7 +52,11 @@
         <div class="col-sm-8">
 			<select id="typeOfIncident" class="form-control" name="typeOfIncident">
 			<option value="">Select</option>
-			<option value="010">Fire</option><option value="020">Riot</option><option value="030">Burglary</option><option value="040">Domestic Violent</option><option value="050">Fallen Tree</option><option value="060">Traffic Accident</option><option value="070">Loan Shark</option><option value="080"></option>
+				<?php
+					foreach($incidentTypes as $incidentType){
+						echo "<option value=\"" . $incidentType["id"] . "\">" . $incidentType["type"] . "</option>";
+					}
+				?>
 			</select>
         </div>
       </div>
@@ -68,7 +72,7 @@
       </div>
       <div class="form-group row">
         <div class="offset-sm-4 col-sm-8">
-		   <button type="submit" class="btn btn-primary" name="submit" id="submit">Process Call</button>
+		   <button type="submit" class="btn btn-primary" name="btnProcessCall" id="submit">Process Call</button>
         </div>
       </div>
     </form>
