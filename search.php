@@ -12,14 +12,14 @@
 		include "header.php";
 	?>
   <section class="mt-3">
-    <form>
+    <form action="update.php" method="post">
       <div class="form-group row">
         <label for="patrolCar" class="col-sm-3 col-form-label">Patrol Car Number</label>
         <div class="col-sm-3">
-          <input type="text" class="form-control" id="patrolCarId" name="callerName">
+          <input type="text" class="form-control" id="patrolCarId" name="patrolCarId">
         </div>
 			<div class="col-sm-6">
-			<button type="submit" class="btn btn-primary" name="submit" id="submit">Search</button>
+			<button type="submit" class="btn btn-primary" name="btnSearch" id="submit">Search</button>
 		  </div>
       </div>
       <div class="form-group row">
