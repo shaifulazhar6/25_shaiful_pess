@@ -5,8 +5,8 @@
 	$statuses = [];
 	if($isBtnSearchClicked == true) {
 		$carId = $_POST["patrolCarId"];
-		//echo "You have search car id:" . $carId;
-	$sql = "SELECT * FROM `patrolcar` WHERE 'patrolcar_id' = '" . $carId . "'";
+		echo "You have search car id:" . $carId;
+		echo $sql;
 	$conn = new mysqli(DB_SERVER,DB_USER,DB_PASSWORD,DB_DATABASE);
 	$result = $conn->query($sql);
 	if($row = $result->fetch_assoc()) {
@@ -30,7 +30,55 @@
 		
 	}
 
-	$updateSucess = false;
+	$btnUpdateClicked = isset($_POST["btnUpdate"]);
+	if($btnUpdateClicked == true) {
+		$updateSucess = false;
+		$conn = new mysqli(DB_SERVER,DB_USER,DB_PASSWORD,DB_DATABASE);
+		$newStatusId = $_POST["carStatus"];
+		$carId = $_POST["patrolCarId"];
+		
+
+		if($newStatusId == 4) { // Arrived
+			$sql = "UPDATE `dispatch` SET ``time_arrived`=now() WHERE time_arrived is null and patrolcar_id = '" . $carId . "'";
+			$updateSuccess = $conn->query($sql);
+		
+			if($updateSuccess == false) {
+			echo "Error:" . $sql . "<br>" . $conn->error;
+		}
+			
+		}
+		else if($newStatusId == 3) {
+			$sql = "SELECT incident_id FROM 'dispatch' WHERE time_completed is null and patrolcar_id='" . $carId . "'";
+			$result = $conn->query($sql);
+			$incidentId = 0;
+			if($result->num_rows >0) {
+				if($row = $result->fetchassoc()) {
+					$incidentId = $row["incident_id"];
+				}
+			}
+							$sql = "UPDATE `dispatch` SET `time_completed`=now() WHERE time_arrived is null and patrolcar_id = '" . $incidentId . "'";
+			$updateSuccess = $conn->query($sql);
+		
+			if($updateSuccess == false) {
+			echo "Error:" . $sql . "<br>" . $conn->error;
+			} 
+			
+				$sql = "UPDATE `incident` SET `incident_status_id`=3 WHERE incident_id = '" . $carId . "'";
+			$updateSuccess = $conn->query($sql);
+		
+			if($updateSuccess == false) {
+			echo "Error:" . $sql . "<br>" . $conn->error;
+			} 
+		}
+		$conn->close();
+		
+		if($updateSuccess == true) {
+			header("location: search.php");
+		}
+	}
+			
+		
+
 	
 		
 ?>
@@ -45,6 +93,7 @@
 
 <body>
 <div class="container" style="width:900px">
+<form action="<form action="<?php echo htmlentities($_SERVER["PHP_SELF"]) ?>" method="post">
 <?php
 		include "header.php";
 	?>
@@ -83,7 +132,7 @@
 	  
       <div class=\"form-group row\">
         <div class=\"offset-sm-4 col-sm-8\">
-		   <button type=\"submit\" class=\"btn btn-primary\" name=\"submit\" id=\"submit\">Update</button>
+		   <button type=\"submit\" class=\"btn btn-primary\" name=\"btnUpdate\" id=\"submit\">Update</button>
         </div>
       </div>";
 			}

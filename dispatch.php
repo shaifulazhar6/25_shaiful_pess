@@ -64,6 +64,7 @@ require_once "db.php";
 		}
 		$sql = "INSERT INTO 'dispatch'('incident_id'), 'patrolcar_id', 'time_dispatched') VALUES (" . $incidentId . ",'" . $eachCarId . "'),now())";
 		$insertDispatchSuccess = $conn->query($sql);
+		echo $sql;
 		
 		if($insertDispatchSuccess == false) {
 			echo "Error:" . $sql . "<br>" . $conn->error;
@@ -90,7 +91,7 @@ require_once "db.php";
 		include "header.php";
 ?>
   <section class="mt-3">
-    <form action="<?php echo htmlentities($_SERVER["PHP_SELF"]) ?>" mo>
+    <form action="<?php echo htmlentities($_SERVER["PHP_SELF"]) ?>" method="post">
       <div class="form-group row">
         <label for="callerName" class="col-sm-4 form-label">Caller's Name</label>
         <div class="col-sm-8">
